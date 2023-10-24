@@ -9,7 +9,6 @@ const Card = ({ image, rotation }) => {
         transform: `rotate(${rotation}deg)`,
     };
 
-    console.log(image, rotation);
     return (
         <>
             <img class="card-style" src={image} style={style} />

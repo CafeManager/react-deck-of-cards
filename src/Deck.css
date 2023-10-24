@@ -1,3 +1,6 @@
 .card-container {
-    position: relative
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 8rem;
 }

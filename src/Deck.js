@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Card from "./Card";
 import CardButton from "./CardButton";
 import axios from "axios";
-import "./";
+import "./Deck.css";
 
 const Deck = () => {
     const [deckID, setDeckID] = useState(null);
     const [drawnCards, setDrawnCards] = useState([]);
+
+    const deck = useRef([]);
 
     useEffect(() => {
         async function getDeckID() {
@@ -21,18 +23,18 @@ const Deck = () => {
     }, []);
 
     function addCard(newCard) {
+        deck.current = [...deck.current, newCard];
         setDrawnCards([...drawnCards, newCard]);
     }
 
     return (
         <>
-            {console.log(drawnCards)}
             {deckID ? (
                 <CardButton deck_id={deckID} addCard={addCard}></CardButton>
             ) : null}
             <div className="card-container">
-                {drawnCards ? (
-                    drawnCards.map((card) => (
+                {deck.current ? (
+                    deck.current.map((card) => (
                         <Card
                             image={card.image}
                             rotation={card.rotation}

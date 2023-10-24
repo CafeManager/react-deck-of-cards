@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const CardButton = ({ deck_id, addCard }) => {
-    console.log("CardButton called!");
     const style = {
         position: "absolute",
         borderRadius: "3px",
         transform: "rotate",
     };
     const [retrieving, setRetrieving] = useState(false);
+    const [currInterval, setCurrInterval] = useState(null);
 
     useEffect(() => {
         const getCard = async () => {
-            console.log("getCard called!");
             const card = await axios
                 .get(
                     `https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`
@@ -28,22 +27,40 @@ const CardButton = ({ deck_id, addCard }) => {
                         image,
                         rotation: Math.random() * 30,
                     });
-
-                    setRetrieving(false);
+                })
+                .catch(function (err) {
+                    if (typeof err == TypeError) {
+                        console.log(err);
+                        setRetrieving(false);
+                        clearInterval(currInterval);
+                    }
                 });
             return card;
         };
+        clearInterval(currInterval);
         if (retrieving) {
-            getCard();
+            const startRetrieving = setInterval(getCard, 500);
+            setCurrInterval(startRetrieving);
         }
     }, [retrieving]);
 
     const callAPI = () => {
-        console.log("callAPI called!");
-        setRetrieving(true);
+        setRetrieving((retrieving) => !retrieving);
     };
 
-    return <button onClick={callAPI}> Draw a card </button>;
+    return (
+        <button
+            style={{
+                marginTop: "2rem",
+                borderRadius: "3px",
+                backgroundColor: "grey",
+                padding: ".5rem",
+            }}
+            onClick={callAPI}
+        >
+            {!retrieving ? "Start Drawing" : "Stop Drawing"}
+        </button>
+    );
 };
 
 export default CardButton;
