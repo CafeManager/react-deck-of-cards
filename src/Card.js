@@ -1,11 +1,20 @@
-const Card = ({ random, suit, value }) => {
+import { useEffect, useState } from "react";
+import axios from "axios";
+import "./Card.css";
+
+const Card = ({ image, rotation }) => {
     const style = {
         position: "absolute",
         borderRadius: "3px",
-        transform: "rotate",
+        transform: `rotate(${rotation}deg)`,
     };
 
-    return <div> Post </div>;
+    console.log(image, rotation);
+    return (
+        <>
+            <img class="card-style" src={image} style={style} />
+        </>
+    );
 };
 
 export default Card;
